@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liy.parttimesystem.mapper.CommentMapper">
+    <select id="selectThingCommentList" parameterType="map" resultType="com.liy.parttimesystem.dto.CommentDto">
+        select A.*,B.nickname as username,C.title as title
+        ,count(D.comment_id) as likeCount
+        from comment as A
+        join user as B on (A.user_id=B.id)
+        join thing as C on (A.thing_id=C.id)
+        left join comment_like as D on (A.id = D.comment_id)
+        <if test="thingId != null">
+            where A.thing_id=#{thingId}
+        </if>
+        GROUP BY A.id
+        <if test="order == 'recent'">
+            order by A.comment_time desc;
+        </if>
+        <if test="order == 'hot'">
+            order by likeCount desc;
+        </if>
+    </select>
+
+    <select id="getList" parameterType="map" resultType="com.liy.parttimesystem.dto.CommentDto">
+        select A.*,B.nickname as username, C.title as title from comment as A join user as B on (A.user_id=B.id)
+            JOIN thing as C on (A.thing_id = C.id) GROUP BY A.id
+    </select>
+</mapper>

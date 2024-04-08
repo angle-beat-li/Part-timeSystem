@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: 兼职平台系统
+  datasource:
+    username: root
+    password: 196508
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/graduationdesign?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+mybatis-plus:
+  configuration:
+    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+#  mapper-locations: classpath:com/liy/parttimesystem/mapper/xml/*.xml
+
+server.port: 9100
+server.servlet.context-path: /api

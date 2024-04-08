@@ -1,0 +1,23 @@
+package com.liy.parttimesystem.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+/**
+ * WebMvcConfig$
+ *
+ * @author liy
+ * @date 2024/3/12$
+ */
+@Configuration
+public class WebMvcConfig extends WebMvcConfigurationSupport {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")//项目中的所有接口都支持跨域
+                .allowedOriginPatterns("*") //所有地址都可以访问，也可以配置具体地址
+                .allowCredentials(true)
+                .allowedMethods("*");//"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"
+    }
+
+}
