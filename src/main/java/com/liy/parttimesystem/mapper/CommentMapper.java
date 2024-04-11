@@ -3,6 +3,7 @@ package com.liy.parttimesystem.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.liy.parttimesystem.dto.CommentDto;
 import com.liy.parttimesystem.entity.Comment;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,4 +18,6 @@ import java.util.List;
 public interface CommentMapper  extends BaseMapper<Comment> {
     List<CommentDto> selectThingCommentList(Long thingId, String order );
     List<CommentDto> getList();
+    @Delete("delete from comment where thing_id = #{thingId}")
+    void deleteByThing(Long thingId);
 }

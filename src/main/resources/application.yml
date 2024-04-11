@@ -18,3 +18,7 @@ mybatis-plus:
 
 server.port: 9100
 server.servlet.context-path: /api
+
+BASE_LOCATION: C:\Users\liy\Desktop\Graduation Design\Part-timeSystem
+File:
+  uploadPath: ${BASE_LOCATION}\upload

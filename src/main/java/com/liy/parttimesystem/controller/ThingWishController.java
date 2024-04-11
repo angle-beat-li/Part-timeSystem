@@ -9,10 +9,7 @@ import com.liy.parttimesystem.service.ThingService;
 import com.liy.parttimesystem.service.ThingWishService;
 import com.liy.parttimesystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,7 +45,7 @@ public class ThingWishController {
                 ThingWish one = thingWishService.getOne(queryWrapper);
                 if(one == null) {
                     thingWishService.save(thingWish);
-                    return new APIResponse(ResponeCode.SUCCESS,"ok");
+                    return new APIResponse(ResponeCode.SUCCESS,"添加成功");
                 }
 
             }
@@ -74,12 +71,13 @@ public class ThingWishController {
       * @return:
 
       */
-    @PostMapping("/getUserWishList")
+    @GetMapping("/getUserWishList")
     public  APIResponse getUserWishList(Long userId){
         if(userId != null) {
-            List<ThingWish> list = thingWishService.getByUserId(userId);
-            return new APIResponse(ResponeCode.SUCCESS,"ok",list);
+            List<Thing> list = thingWishService.getByUserId(userId);
+            return new APIResponse(ResponeCode.SUCCESS,"查询成功",list);
         }
-        return new APIResponse(ResponeCode.FAIL,"null");
+        return new APIResponse(ResponeCode.FAIL,"查询失败");
     }
+
 }

@@ -6,12 +6,17 @@ import com.liy.parttimesystem.common.ResponeCode;
 import com.liy.parttimesystem.entity.User;
 import com.liy.parttimesystem.service.UserService;
 import com.liy.parttimesystem.utils.NowDataTimeUtils;
+import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sun.util.locale.provider.FallbackLocaleProviderAdapter;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * UserController$
@@ -25,6 +30,10 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Value("${File.uploadPath}")
+    private String uploadPath;
+
     /**
      * @description: 更新用户信息
 
@@ -152,9 +161,11 @@ public class UserController {
         for (int i = 0; i < id.length; i++) {
             phones[i] = Long.parseLong(id[i]);
         }
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.in(User::getPhone, phones);
-        userService.remove(queryWrapper);
+        if(phones.length != 0){
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.in(User::getPhone, phones);
+            userService.remove(queryWrapper);
+        }
         return new APIResponse(ResponeCode.SUCCESS, "删除成功");
     }
     /**
@@ -280,4 +291,39 @@ public class UserController {
         return new APIResponse(ResponeCode.FAIL,"更改密码失败,请仔细核对密码");
     }
 
+
+    @PostMapping("/createResumeApi")
+    public APIResponse createResumeApi(User user) {
+        User newUser = null;
+        try {
+            newUser = saveResume(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(newUser.getCoverName());
+        newUser.setUpdateTime(NowDataTimeUtils.getNowTime());
+        userService.updateById(newUser);
+        return new APIResponse(ResponeCode.SUCCESS,"保存成功");
+    }
+
+
+    public User saveResume(User user) throws IOException {
+        MultipartFile file = user.getCover();
+        String newFileName = null;
+        if(file !=null && !file.isEmpty()) {
+            // 存文件
+            String oldFileName = file.getOriginalFilename();
+            newFileName = user.getId() +  oldFileName.substring(oldFileName.lastIndexOf("."));
+            String filePath = uploadPath + File.separator + "resume" + File.separator + newFileName;
+            File destFile = new File(filePath);
+            if(!destFile.getParentFile().exists()){
+                destFile.getParentFile().mkdirs();
+            }
+            file.transferTo(destFile);
+        }
+        if(!StringUtils.isEmpty(newFileName)) {
+            user.setCoverName(newFileName);
+        }
+        return user;
+    }
 }

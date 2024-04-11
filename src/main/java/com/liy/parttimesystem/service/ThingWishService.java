@@ -1,6 +1,7 @@
 package com.liy.parttimesystem.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.liy.parttimesystem.entity.Thing;
 import com.liy.parttimesystem.entity.ThingWish;
 
 import java.util.List;
@@ -13,5 +14,5 @@ import java.util.List;
  */
 public interface ThingWishService extends IService<ThingWish> {
 
-    List<ThingWish> getByUserId(Long userId);
+    List<Thing> getByUserId(Long userId);
 }

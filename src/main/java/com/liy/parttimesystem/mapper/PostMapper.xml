@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liy.parttimesystem.mapper.PostMapper">
+    <select id="getPostDto" parameterType="map" resultType="com.liy.parttimesystem.dto.PostDto">
+        SELECT post.*, b.nickname as name FROM post  join user as b on post.user_id = b.id where post.thing_id in
+        <foreach item="item" collection="thingIds" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+
+    </select>
+</mapper>

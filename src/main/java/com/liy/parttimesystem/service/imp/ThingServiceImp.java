@@ -9,10 +9,7 @@ import com.liy.parttimesystem.entity.Thing;
 import com.liy.parttimesystem.entity.ThingClassification;
 import com.liy.parttimesystem.entity.ThingTag;
 import com.liy.parttimesystem.entity.ThingUser;
-import com.liy.parttimesystem.mapper.ThingClassificationMapper;
-import com.liy.parttimesystem.mapper.ThingMapper;
-import com.liy.parttimesystem.mapper.ThingTagMapper;
-import com.liy.parttimesystem.mapper.ThingUserMapper;
+import com.liy.parttimesystem.mapper.*;
 import com.liy.parttimesystem.service.ThingClassificationService;
 import com.liy.parttimesystem.service.ThingService;
 import com.liy.parttimesystem.service.ThingTagService;
@@ -47,6 +44,12 @@ public class ThingServiceImp extends ServiceImpl<ThingMapper, Thing> implements 
 
     @Autowired
     ThingUserMapper thingUserMapper;
+
+    @Autowired
+    CommentMapper commentMapper;
+
+    @Autowired
+    CommentLikeMapper commentLikeMapper;
 
 
     public List<ThingDto> getThingList(String keyword, String sort, String c, String tag) {
@@ -145,6 +148,8 @@ public class ThingServiceImp extends ServiceImpl<ThingMapper, Thing> implements 
             thingTagMapper.deleteByThing(item);
             thingUserMapper.deleteByThing(item);
             thingClassificationMapper.deleteByThing(item);
+            commentMapper.deleteByThing(item);
+            commentLikeMapper.deleteByThing(item);
 
         });
     }
